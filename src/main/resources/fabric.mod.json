@@ -12,14 +12,14 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "MIT",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/therium/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"com.therium.Therium"
 		],
-		"client": [
-			"com.example.ExampleModClient"
+		"fabric-datagen": [
+			"com.therium.TheriumModDataGenerator"
 		]
 	},
 	"mixins": [
