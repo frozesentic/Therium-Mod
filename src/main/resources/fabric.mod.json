@@ -18,6 +18,9 @@
 		"main": [
 			"com.therium.Therium"
 		],
+		"client": [
+			"com.therium.TheriumModClient"
+		],
 		"fabric-datagen": [
 			"com.therium.TheriumModDataGenerator"
 		]
