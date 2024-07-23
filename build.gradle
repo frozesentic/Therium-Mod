@@ -36,10 +36,16 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	// Logging and JSON handling
+	implementation 'org.slf4j:slf4j-api:2.0.0' // SLF4J API for logging
+	implementation 'org.slf4j:slf4j-simple:2.0.0' // SLF4J Simple binding for logging
+	implementation "com.google.code.gson:gson:2.8.9" // Gson for JSON handling
 }
+
+
 
 processResources {
 	inputs.property "version", project.version
