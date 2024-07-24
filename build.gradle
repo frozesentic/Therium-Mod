@@ -40,9 +40,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Logging and JSON handling
-	implementation 'org.slf4j:slf4j-api:2.0.0' // SLF4J API for logging
-	implementation 'org.slf4j:slf4j-simple:2.0.0' // SLF4J Simple binding for logging
-	implementation "com.google.code.gson:gson:2.8.9" // Gson for JSON handling
+	implementation 'org.slf4j:slf4j-api:2.0.13' // SLF4J API for logging
+	implementation 'com.google.code.gson:gson:2.11.0'
 }
 
 
@@ -90,5 +89,16 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+tasks.named('runClient') {
+	doFirst {
+		jvmArgs += [
+				'--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+				'--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED',
+				'--add-opens', 'java.base/java.util=ALL-UNNAMED',
+				'--add-opens', 'java.base/java.security=ALL-UNNAMED'  // Added line
+		]
 	}
 }
