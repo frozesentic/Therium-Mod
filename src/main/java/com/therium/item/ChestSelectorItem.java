@@ -51,7 +51,6 @@ public class ChestSelectorItem extends Item {
         return ActionResult.PASS;
     }
 
-
     public boolean onLeftClick(PlayerEntity player, World world, BlockPos pos, Hand hand) {
         Therium.LOGGER.info("ChestSelectorItem left-clicked on block at {}", pos);
 
@@ -59,7 +58,6 @@ public class ChestSelectorItem extends Item {
             Therium.LOGGER.info("ChestBlockEntity found at {}", pos);
             if (player instanceof ServerPlayerEntity) {
                 ChestData chestData = getChestData(pos, chestEntity);
-                // Assuming saveChestData is updated to handle multiple entries
                 DataManager.saveChestData(List.of(chestData));
                 player.sendMessage(Text.literal("Chest data saved!"), false);
                 Therium.LOGGER.info("Chest data saved at {}", pos);
@@ -74,7 +72,6 @@ public class ChestSelectorItem extends Item {
         return false;
     }
 
-
     private ChestData getChestData(BlockPos pos, ChestBlockEntity chestEntity) {
         Map<Integer, ItemStack> items = new HashMap<>();
         for (int i = 0; i < chestEntity.size(); i++) {
@@ -84,5 +81,4 @@ public class ChestSelectorItem extends Item {
         Therium.LOGGER.info("Creating ChestData: {}", chestData);
         return chestData;
     }
-
 }

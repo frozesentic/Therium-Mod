@@ -1,0 +1,2 @@
+setblock -20 73 18 minecraft:chest[facing=north] replace
+data merge block -20 73 18 {Items:[{Slot:0b,id:"minecraft:iron_ingot",count:33b},{Slot:1b,id:"minecraft:gold_ingot",count:9b},{Slot:2b,id:"minecraft:diamond",count:16b}]}
