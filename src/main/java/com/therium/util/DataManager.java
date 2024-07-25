@@ -12,6 +12,8 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DataManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataManager.class);
@@ -32,8 +34,13 @@ public class DataManager {
 
         existingChestDataList.addAll(newChestDataList);
 
+        // Filter out items with "minecraft:air" or count 0
+        List<ChestData> filteredChestDataList = existingChestDataList.stream()
+                .map(DataManager::filterChestData)
+                .collect(Collectors.toList());
+
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
-            GSON.toJson(existingChestDataList, writer);
+            GSON.toJson(filteredChestDataList, writer);
         } catch (IOException e) {
             LOGGER.error("Failed to save chest data to file", e);
         }
@@ -52,5 +59,12 @@ public class DataManager {
             LOGGER.error("Failed to load chest data from file", e);
             return new ArrayList<>(); // Return an empty list if there is an error
         }
+    }
+
+    private static ChestData filterChestData(ChestData chestData) {
+        Map<Integer, ItemStack> filteredItems = chestData.getItems().entrySet().stream()
+                .filter(entry -> !entry.getValue().getItem().toString().equals("minecraft:air") && entry.getValue().getCount() > 0)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new ChestData(chestData.getPos(), filteredItems, chestData.getContainerType());
     }
 }

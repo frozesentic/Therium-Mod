@@ -1,5 +1,6 @@
 package com.therium;
 
+import com.therium.command.ForceLoader;
 import com.therium.item.ModItems;
 import com.therium.util.ModRegistries;
 import net.fabricmc.api.ModInitializer;
@@ -15,6 +16,7 @@ public class Therium implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		CommandRegistrationCallback.EVENT.register(ForceLoader::register);
 		CommandRegistrationCallback.EVENT.register(ReloadChestsCommand::register);
 		ModEventHandler.registerEvents();
 		ModItems.registerItems();

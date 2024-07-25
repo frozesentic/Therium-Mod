@@ -1,5 +1,6 @@
 package com.therium.util;
 
+import com.therium.command.ForceLoader;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import com.therium.command.BoopCommand;
 
