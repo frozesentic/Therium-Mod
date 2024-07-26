@@ -17,18 +17,15 @@ public class ItemStackAdapter extends TypeAdapter<ItemStack> {
 
     @Override
     public void write(JsonWriter out, ItemStack stack) throws IOException {
-        LOGGER.info("Writing ItemStack: {}", stack);
         out.beginObject();
         out.name("item").value(Registries.ITEM.getId(stack.getItem()).toString());
         out.name("count").value(stack.getCount());
         // Serializing item components, if needed
         out.endObject();
-        LOGGER.info("Finished writing ItemStack: {}", stack);
     }
 
     @Override
     public ItemStack read(JsonReader in) throws IOException {
-        LOGGER.info("Reading ItemStack");
         in.beginObject();
         Item item = null;
         int count = 0;
@@ -39,11 +36,9 @@ public class ItemStackAdapter extends TypeAdapter<ItemStack> {
                 case "item" -> {
                     Identifier itemId = Identifier.of(in.nextString());
                     item = Registries.ITEM.get(itemId);
-                    LOGGER.info("Read item: {}", itemId);
                 }
                 case "count" -> {
                     count = in.nextInt();
-                    LOGGER.info("Read count: {}", count);
                 }
                 default -> LOGGER.warn("Unexpected name: {}", name);
             }

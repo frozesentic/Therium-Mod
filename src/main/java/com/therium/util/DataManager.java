@@ -13,6 +13,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class DataManager {
@@ -20,10 +22,15 @@ public class DataManager {
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(BlockPos.class, new BlockPosAdapter())
             .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
-            .setPrettyPrinting() // Enable pretty printing
             .create();
     private static final Type CHEST_DATA_LIST_TYPE = new TypeToken<List<ChestData>>(){}.getType();
-    private static final String FILE_PATH = "chests.json";
+    private static final String FILE_PATH = "C:/Users/creeh/OneDrive/Main/PROGRAMS/Therium-Mod/run/chests.json";
+
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    public static void saveChestDataAsync(List<ChestData> newChestDataList) {
+        executor.submit(() -> saveChestData(newChestDataList));
+    }
 
     public static void saveChestData(List<ChestData> newChestDataList) {
         List<ChestData> existingChestDataList = loadChestData();
@@ -39,7 +46,7 @@ public class DataManager {
                 .map(DataManager::filterChestData)
                 .collect(Collectors.toList());
 
-        try (FileWriter writer = new FileWriter(FILE_PATH)) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             GSON.toJson(filteredChestDataList, writer);
         } catch (IOException e) {
             LOGGER.error("Failed to save chest data to file", e);
@@ -53,7 +60,7 @@ public class DataManager {
             return new ArrayList<>(); // Return an empty list if the file does not exist
         }
 
-        try (FileReader reader = new FileReader(file)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             return GSON.fromJson(reader, CHEST_DATA_LIST_TYPE);
         } catch (IOException e) {
             LOGGER.error("Failed to load chest data from file", e);

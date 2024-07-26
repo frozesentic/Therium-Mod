@@ -14,18 +14,15 @@ public class BlockPosAdapter extends TypeAdapter<BlockPos> {
 
     @Override
     public void write(JsonWriter out, BlockPos pos) throws IOException {
-        LOGGER.info("Writing BlockPos: {}", pos);
         out.beginObject();
         out.name("x").value(pos.getX());
         out.name("y").value(pos.getY());
         out.name("z").value(pos.getZ());
         out.endObject();
-        LOGGER.info("Finished writing BlockPos");
     }
 
     @Override
     public BlockPos read(JsonReader in) throws IOException {
-        LOGGER.info("Reading BlockPos");
         in.beginObject();
         int x = 0, y = 0, z = 0;
         while (in.hasNext()) {
@@ -33,15 +30,12 @@ public class BlockPosAdapter extends TypeAdapter<BlockPos> {
             switch (name) {
                 case "x" -> {
                     x = in.nextInt();
-                    LOGGER.info("Read x: {}", x);
                 }
                 case "y" -> {
                     y = in.nextInt();
-                    LOGGER.info("Read y: {}", y);
                 }
                 case "z" -> {
                     z = in.nextInt();
-                    LOGGER.info("Read z: {}", z);
                 }
                 default -> LOGGER.warn("Unexpected name: {}", name);
             }

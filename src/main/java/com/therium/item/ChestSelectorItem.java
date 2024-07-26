@@ -1,6 +1,5 @@
 package com.therium.item;
 
-import com.therium.Therium;
 import com.therium.util.DataManager;
 import com.therium.util.ChestData;
 import net.minecraft.block.entity.BarrelBlockEntity;
@@ -34,44 +33,26 @@ public class ChestSelectorItem extends Item {
         BlockPos pos = context.getBlockPos();
         PlayerEntity player = context.getPlayer();
 
-        Therium.LOGGER.info("ChestSelectorItem used on block at {}", pos);
-
         if (world.getBlockEntity(pos) instanceof LootableContainerBlockEntity containerEntity) {
-            Therium.LOGGER.info("LootableContainerBlockEntity found at {}", pos);
             if (player instanceof ServerPlayerEntity) {
                 ChestData chestData = getChestData(pos, containerEntity);
                 DataManager.saveChestData(List.of(chestData)); // Save the chest data
                 player.sendMessage(Text.literal("Container data saved!"), false);
-                Therium.LOGGER.info("Container data saved at {}", pos);
                 return ActionResult.SUCCESS;
-            } else {
-                Therium.LOGGER.warn("Player is not a ServerPlayerEntity at {}", pos);
             }
-        } else {
-            Therium.LOGGER.warn("Block entity at {} is not a recognized container", pos);
         }
-
         return ActionResult.PASS;
     }
 
     public boolean onLeftClick(PlayerEntity player, World world, BlockPos pos, Hand hand) {
-        Therium.LOGGER.info("ChestSelectorItem left-clicked on block at {}", pos);
-
         if (world.getBlockEntity(pos) instanceof LootableContainerBlockEntity containerEntity) {
-            Therium.LOGGER.info("LootableContainerBlockEntity found at {}", pos);
             if (player instanceof ServerPlayerEntity) {
                 ChestData chestData = getChestData(pos, containerEntity);
                 DataManager.saveChestData(List.of(chestData));
                 player.sendMessage(Text.literal("Container data saved!"), false);
-                Therium.LOGGER.info("Container data saved at {}", pos);
                 return true;
-            } else {
-                Therium.LOGGER.warn("Player is not a ServerPlayerEntity at {}", pos);
             }
-        } else {
-            Therium.LOGGER.warn("Block entity at {} is not a recognized container", pos);
         }
-
         return false;
     }
 
@@ -92,8 +73,6 @@ public class ChestSelectorItem extends Item {
             containerType = "unknown";
         }
 
-        ChestData chestData = new ChestData(pos, items, containerType);
-        Therium.LOGGER.info("Creating ChestData: {}", chestData);
-        return chestData;
+        return new ChestData(pos, items, containerType);
     }
 }
